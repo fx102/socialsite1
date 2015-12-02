@@ -1,13 +1,20 @@
 {
-    "name": "my-social-network",
+    "name": "social-site-1",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-      "express": "~3.0.0",
+      "express": "~4.x",
       "jade": ">= 0.0.1",
-      "mongoose": ">= 2.6.5",
-      "nodemailer": "0.3.20",
+      "mongoose": "~4.x",
+      "nodemailer": ">=1.x",
       "connect": ">= 1.9.1",
-      "express-session": ">= 0.0.1"
-  }
+      "express-session": ">= 0.0.1",
+      "path": "~0.x",
+      "body-parser": "~x.x",
+      "method-override": "~x.x",
+      "errorhandler": "~x.x",
+      "raw-body": "~x.x",
+      "media-typer": "~x.x",
+      "cookie-parser": "~x.x"
+    }
 }

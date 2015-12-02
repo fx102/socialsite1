@@ -1,14 +1,20 @@
 //server side, start of the program
 
 //when user require(...), methods within the moodule become accessible
-var express     = require("express");
-var app         = express();
-var nodemailer  = require('nodemailer');
-var session = require('express-session');
-var dbPath      = 'mongodb://localhost/nodebackbone';
+var express     = require("express"),
+    app         = express(),
+    nodemailer  = require('nodemailer'),
+    session     = require('express-session'),
+    dbPath      = 'mongodb://localhost/nodebackbone'
+    bodyParser  = require('body-parser'),
+    methodOverride = require('method-override'),
+    errorhandler = require('errorhandler'),
+    mongoose = require('mongoose'),
+    //https://www.npmjs.com/package/raw-body
+    getRawBody = require('raw-body'),
+    cookieParser = require('cookie-parser'),
+    typer = require('media-typer');
 
-// Import the data layer
-var mongoose = require('mongoose');
 var config = {
   mail: require('./config/mail')
 };
@@ -19,18 +25,26 @@ var models = {
 };
 
 //from Express 4.x onwards, app.configure can be removed
-app.configure(function(){
-  app.set('view engine', 'jade');
-  app.use(express.static(__dirname + '/public'));
-  app.use(express.limit('1mb'));
-  app.use(express.bodyParser());
-  app.use(express.cookieParser());
-  app.use(session(({
+//app.configure(function(){});
+app.set('view engine', 'jade');
+app.use(methodOverride());
+app.use(bodyParser.json());
+//was limiting the body size with raw-body/media-typers
+app.use(bodyParser.raw({ limit: '1mb' }));
+// parse application/x-www-form-urlencoded
+//?
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
+//Show all errors in development
+app.use( errorhandler({ dumpExceptions: true, showStack: true }));
+
+app.use(cookieParser());
+app.use(session(({
   secret: 'keyboard cat'
-  })));
-  mongoose.connect(dbPath, function onMongooseError(err) {
-    if (err) throw err;
-  });
+})));
+
+mongoose.connect(dbPath, function onMongooseError(err) {
+  if (err) throw err;
 });
 
 app.get('/', function(req, res){
@@ -39,24 +53,24 @@ app.get('/', function(req, res){
 
 app.post('/login', function(req, res) {
   console.log('login request');
-  var email = req.param('email', null);
-  var password = req.param('password', null);
+  var email = req.params.email;
+  var password = req.params.password;
 
   if ( null == email || email.length < 1
       || null == password || password.length < 1 ) {
-    res.send(400);
+    res.sendStatus(400);
     return;
   }
 
   models.Account.login(email, password, function(account) {
     if ( !account ) {
-      res.send(401);
+      res.sendStatus(401);
       return;
     }
     console.log('login was successful');
     req.session.loggedIn = true;
     req.session.accountId = account._id;
-    res.send(200);
+    res.sendStatus(200);
   });
 });
 
@@ -68,19 +82,19 @@ app.post('/register', function(req, res) {
 
   if ( null == email || email.length < 1
        || null == password || password.length < 1 ) {
-    res.send(400);
+    res.sendStatus(400);
     return;
   }
 
   models.Account.register(email, password, firstName, lastName);
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.get('/account/authenticated', function(req, res) {
   if ( req.session.loggedIn ) {
-    res.send(200);
+    res.sendStatus(200);
   } else {
-    res.send(401);
+    res.sendStatus(401);
   }
 });
 
@@ -89,7 +103,7 @@ app.get('/accounts/:id/activity', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.send(account.activity);
+    res.sendStatus(account.activity);
   });
 });
 
@@ -98,7 +112,7 @@ app.get('/accounts/:id/status', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.send(account.status);
+    res.sendStatus(account.status);
   });
 });
 
@@ -121,7 +135,7 @@ app.post('/accounts/:id/status', function(req, res) {
       }
     });
   });
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.get('/accounts/:id', function(req, res) {
@@ -129,7 +143,7 @@ app.get('/accounts/:id', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.send(account);
+    res.sendStatus(account);
   });
 });
 
@@ -138,16 +152,16 @@ app.post('/forgotpassword', function(req, res) {
   var resetPasswordUrl = 'http://' + hostname + '/resetPassword';
   var email = req.param('email', null);
   if ( null == email || email.length < 1 ) {
-    res.send(400);
+    res.sendStatus(400);
     return;
   }
 
   models.Account.forgotPassword(email, resetPasswordUrl, function(success){
     if (success) {
-      res.send(200);
+      res.sendStatus(200);
     } else {
       // Username or password not found
-      res.send(404);
+      res.sendStatus(404);
     }
   });
 });
