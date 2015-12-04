@@ -40,7 +40,9 @@ app.use( errorhandler({ dumpExceptions: true, showStack: true }));
 
 app.use(cookieParser());
 app.use(session(({
-  secret: 'keyboard cat'
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
 })));
 
 mongoose.connect(dbPath, function onMongooseError(err) {
@@ -52,12 +54,12 @@ app.get('/', function(req, res){
 });
 
 app.post('/login', function(req, res) {
-  console.log('login request');
-  var email = req.params.email;
-  var password = req.params.password;
+  var email = req.body.email;
+  var password = req.body.password;
 
   if ( null == email || email.length < 1
       || null == password || password.length < 1 ) {
+    console.log('length less than 1');
     res.sendStatus(400);
     return;
   }
@@ -75,10 +77,10 @@ app.post('/login', function(req, res) {
 });
 
 app.post('/register', function(req, res) {
-  var firstName = req.param('firstName', '');
-  var lastName = req.param('lastName', '');
-  var email = req.param('email', null);
-  var password = req.param('password', null);
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var email = req.body.email;
+  var password = req.body.password;
 
   if ( null == email || email.length < 1
        || null == password || password.length < 1 ) {
@@ -98,6 +100,15 @@ app.get('/account/authenticated', function(req, res) {
   }
 });
 
+app.get('/accounts/:id/contacts', function(req, res) {
+  var accountId = req.params.id == 'me'
+                     ? req.session.accountId
+                     : req.body.id;
+  models.Account.findById(accountId, function(account) {
+    res.send(account.contacts);
+  });
+});
+
 app.get('/accounts/:id/activity', function(req, res) {
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
@@ -108,6 +119,7 @@ app.get('/accounts/:id/activity', function(req, res) {
 });
 
 app.get('/accounts/:id/status', function(req, res) {
+  console.log(req.params.id);
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
                      : req.params.id;
@@ -123,7 +135,7 @@ app.post('/accounts/:id/status', function(req, res) {
   models.Account.findById(accountId, function(account) {
     status = {
       name: account.name,
-      status: req.param('status', '')
+      status: req.body.status
     };
     account.status.push(status);
 
@@ -135,6 +147,35 @@ app.post('/accounts/:id/status', function(req, res) {
       }
     });
   });
+  res.sendStatus(200);
+});
+
+app.post('/accounts/:id/contact', function(req,res) {
+  var accountId = req.body.id == 'me'
+                     ? req.session.accountId
+                     : req.body.id;
+  var contactId = req.body.contactId;
+
+  // Missing contactId, don't bother going any further
+  if ( null == contactId ) {
+    res.sendStatus(400);
+    return;
+  }
+
+  models.Account.findById(accountId, function(account) {
+    if ( account ) {
+      models.Account.findById(contactId, function(contact) {
+        models.Account.addContact(account, contact);
+
+        // Make the reverse link
+        models.Account.addContact(contact, account);
+        account.save();
+      });
+    }
+  });
+
+  // Note: Not in callback - this endpoint returns immediately and
+  // processes in the background
   res.sendStatus(200);
 });
 
@@ -150,7 +191,7 @@ app.get('/accounts/:id', function(req, res) {
 app.post('/forgotpassword', function(req, res) {
   var hostname = req.headers.host;
   var resetPasswordUrl = 'http://' + hostname + '/resetPassword';
-  var email = req.param('email', null);
+  var email = req.body.email;
   if ( null == email || email.length < 1 ) {
     res.sendStatus(400);
     return;
@@ -166,14 +207,30 @@ app.post('/forgotpassword', function(req, res) {
   });
 });
 
+app.post('/contacts/find', function(req, res) {
+  var searchStr = req.params.searchStr;
+  if ( null == searchStr ) {
+    res.sendStatus(400);
+    return;
+  }
+
+  models.Account.findByString(searchStr, function onSearchDone(err,accounts) {
+    if (err || accounts.length == 0) {
+      res.sendStatus(404);
+    } else {
+      res.send(accounts);
+    }
+  });
+});
+
 app.get('/resetPassword', function(req, res) {
-  var accountId = req.param('account', null);
+  var accountId = req.body.account;
   res.render('resetPassword.jade', {locals:{accountId:accountId}});
 });
 
 app.post('/resetPassword', function(req, res) {
-  var accountId = req.param('accountId', null);
-  var password = req.param('password', null);
+  var accountId = req.body.accountId;
+  var password = req.body.password;
   if ( null != accountId && null != password ) {
     models.Account.changePassword(accountId, password);
   }
