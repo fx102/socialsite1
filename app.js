@@ -103,7 +103,7 @@ app.get('/account/authenticated', function(req, res) {
 app.get('/accounts/:id/contacts', function(req, res) {
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
-                     : req.body.id;
+                     : req.params.id;
   models.Account.findById(accountId, function(account) {
     res.send(account.contacts);
   });
@@ -114,7 +114,7 @@ app.get('/accounts/:id/activity', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.sendStatus(account.activity);
+    res.send(account.activity);
   });
 });
 
@@ -124,7 +124,7 @@ app.get('/accounts/:id/status', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.sendStatus(account.status);
+    res.send(account.status);
   });
 });
 
@@ -132,7 +132,9 @@ app.post('/accounts/:id/status', function(req, res) {
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
                      : req.params.id;
+                     console.log(accountId);
   models.Account.findById(accountId, function(account) {
+    console.log(account);
     status = {
       name: account.name,
       status: req.body.status
@@ -151,9 +153,9 @@ app.post('/accounts/:id/status', function(req, res) {
 });
 
 app.post('/accounts/:id/contact', function(req,res) {
-  var accountId = req.body.id == 'me'
+  var accountId = req.params.id == 'me'
                      ? req.session.accountId
-                     : req.body.id;
+                     : req.params.id;
   var contactId = req.body.contactId;
 
   // Missing contactId, don't bother going any further
@@ -184,7 +186,7 @@ app.get('/accounts/:id', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
-    res.sendStatus(account);
+    res.send(account);
   });
 });
 

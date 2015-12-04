@@ -3,6 +3,8 @@ define(['SocialNetView', 'text!templates/status.html'], function(SocialNetView, 
     tagName: 'li',
 
     render: function() {
+    	console.log('in status view');
+    	console.log(this.model.toJSON());
       $(this.el).html(_.template(statusTemplate,this.model.toJSON()));
       return this;
     }

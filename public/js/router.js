@@ -52,7 +52,9 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
     },
 
     profile: function(id) {
+      console.log(id);
       var model = new Account({id:id});
+      console.log('profile');
       this.changeView(new ProfileView({model:model}));
       model.fetch();
     },

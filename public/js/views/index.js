@@ -15,6 +15,7 @@ function(SocialNetView, indexTemplate, StatusView, Status) {
 
     onStatusCollectionReset: function(collection) {
       var that = this;
+      console.log('onStatusCollectionReset');
       collection.each(function (model) {
         that.onStatusAdded(model);
       });
