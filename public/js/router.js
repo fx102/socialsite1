@@ -15,7 +15,8 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       'register': 'register',
       'forgotpassword': 'forgotpassword',
       'profile/:id': 'profile',
-      'contacts/:id': 'contacts'
+      'contacts/:id': 'contacts',
+      'logout': 'logout'
     },
 
     changeView: function(view) {
@@ -67,6 +68,10 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
         collection: contactsCollection
       }));
       contactsCollection.fetch();
+    }
+
+    logout: function(){
+      this.changeView(new LogoutView);
     }    
   });
 

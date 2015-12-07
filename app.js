@@ -59,7 +59,6 @@ app.post('/login', function(req, res) {
 
   if ( null == email || email.length < 1
       || null == password || password.length < 1 ) {
-    console.log('length less than 1');
     res.sendStatus(400);
     return;
   }
@@ -224,6 +223,14 @@ app.post('/contacts/find', function(req, res) {
     }
   });
 });
+
+/*
+app.get('/logout', function (req, res) {
+    req.session.destroy(function () {
+        res.redirect('/');
+    });
+});
+*/
 
 app.get('/resetPassword', function(req, res) {
   var accountId = req.body.account;
