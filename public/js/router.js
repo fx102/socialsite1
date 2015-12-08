@@ -53,9 +53,7 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
     },
 
     profile: function(id) {
-      console.log(id);
       var model = new Account({id:id});
-      console.log('profile');
       this.changeView(new ProfileView({model:model}));
       model.fetch();
     },
@@ -68,11 +66,24 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
         collection: contactsCollection
       }));
       contactsCollection.fetch();
+    },
+
+    logout1: function(callback) {
+      $.ajax("/logout", {
+        method: "DELETE",
+        success: function() {
+          callback();
+        },
+        error: function(data) {
+          console.log(data);
+        }
+      });
+    },
+
+    logout: function() {
+      this.logout1(this.changeView(new LoginView()));
     }
 
-    logout: function(){
-      this.changeView(new LogoutView);
-    }    
   });
 
   return new SocialRouter();

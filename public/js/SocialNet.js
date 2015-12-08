@@ -20,8 +20,8 @@ http://recurial.com/programming/understanding-callback-functions-in-javascript/
     });
   };
 
-  var runApplication = function(authenticated) {
-    if (!authenticated) {
+  var runApplication = function(result) {
+    if (!result) {
       window.location.hash = 'login';
     } else {
       window.location.hash = 'index';

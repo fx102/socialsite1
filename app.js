@@ -68,7 +68,6 @@ app.post('/login', function(req, res) {
       res.sendStatus(401);
       return;
     }
-    console.log('login was successful');
     req.session.loggedIn = true;
     req.session.accountId = account._id;
     res.sendStatus(200);
@@ -224,13 +223,11 @@ app.post('/contacts/find', function(req, res) {
   });
 });
 
-/*
-app.get('/logout', function (req, res) {
-    req.session.destroy(function () {
-        res.redirect('/');
-    });
+app.delete('/logout', function (req, res) {
+    req.session.destroy(
+      res.sendStatus(200)
+    );
 });
-*/
 
 app.get('/resetPassword', function(req, res) {
   var accountId = req.body.account;
