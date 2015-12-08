@@ -68,22 +68,16 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       contactsCollection.fetch();
     },
 
-    logout1: function(callback) {
-      $.ajax("/logout", {
-        method: "DELETE",
-        success: function() {
-          callback();
-        },
-        error: function(data) {
-          console.log(data);
-        }
-      });
-    },
-
     logout: function() {
-      this.logout1(this.changeView(new LoginView()));
+      //with reference to http://danialk.github.io/blog/2013/07/28/advanced-security-in-backbone-application/
+      var that = this;
+        $.ajax({
+          url : '/logout',
+          type : 'DELETE'
+        }).done(function(response){
+          that.changeView(new LoginView());
+        });
     }
-
   });
 
   return new SocialRouter();

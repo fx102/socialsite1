@@ -224,9 +224,9 @@ app.post('/contacts/find', function(req, res) {
 });
 
 app.delete('/logout', function (req, res) {
-    req.session.destroy(
-      res.sendStatus(200)
-    );
+    req.session.destroy();
+    //must send the status code in order to kick the procedures in .done
+    res.sendStatus(200);
 });
 
 app.get('/resetPassword', function(req, res) {
