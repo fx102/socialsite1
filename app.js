@@ -191,7 +191,6 @@ app.post('/accounts/:id/contact', function(req,res) {
     if ( account ) {
       models.Account.findById(contactId, function(contact) {
         models.Account.addContact(account, contact);
-
         // Make the reverse link
         models.Account.addContact(contact, account);
         //this line saves a duplicated contact
@@ -210,6 +209,9 @@ app.get('/accounts/:id', function(req, res) {
                      ? req.session.accountId
                      : req.params.id;
   models.Account.findById(accountId, function(account) {
+    if ( accountId == 'me' || models.Account.hasContact(account, req.session.accountId) ) {
+      account.isFriend = true;
+    }
     res.send(account);
   });
 });

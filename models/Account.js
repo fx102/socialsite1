@@ -118,11 +118,11 @@ module.exports = function(config, mongoose, nodemailer) {
     };
     account.contacts.push(contact);
 
-    account.save(function (err) {
-      if (err) {
-        console.log('Error saving account: ' + err);
-      }
-    });
+     account.save(function (err) {
+       if (err) {
+         console.log('Error saving account: ' + err);
+       }
+     });
   };
 
   var removeContact = function(account, contactId) {
