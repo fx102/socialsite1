@@ -117,7 +117,6 @@ app.get('/accounts/:id/activity', function(req, res) {
 });
 
 app.get('/accounts/:id/status', function(req, res) {
-  console.log(req.params.id);
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
                      : req.params.id;
@@ -130,9 +129,7 @@ app.post('/accounts/:id/status', function(req, res) {
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
                      : req.params.id;
-                     console.log(accountId);
   models.Account.findById(accountId, function(account) {
-    console.log(account);
     status = {
       name: account.name,
       status: req.body.status
@@ -147,6 +144,34 @@ app.post('/accounts/:id/status', function(req, res) {
       }
     });
   });
+  res.sendStatus(200);
+});
+
+app.delete('/accounts/:id/contact', function(req,res) {
+  var accountId = req.params.id == 'me'
+                     ? req.session.accountId
+                     : req.params.id;
+  var contactId = req.body.contactId;
+
+  // Missing contactId, don't bother going any further
+  if ( null == contactId ) {
+    res.send(400);
+    return;
+  }
+
+  models.Account.findById(accountId, function(account) {
+    if ( !account ) return;
+    models.Account.findById(contactId, function(contact,err) {
+      if ( !contact ) return;
+
+      models.Account.removeContact(account, contactId);
+      // Kill the reverse link
+      models.Account.removeContact(contact, accountId);
+    });
+  });
+
+  // Note: Not in callback - this endpoint returns immediately and
+  // processes in the background
   res.sendStatus(200);
 });
 
@@ -169,7 +194,8 @@ app.post('/accounts/:id/contact', function(req,res) {
 
         // Make the reverse link
         models.Account.addContact(contact, account);
-        account.save();
+        //this line saves a duplicated contact
+        //account.save();
       });
     }
   });
@@ -208,7 +234,7 @@ app.post('/forgotpassword', function(req, res) {
 });
 
 app.post('/contacts/find', function(req, res) {
-  var searchStr = req.params.searchStr;
+  var searchStr = req.body.searchStr;
   if ( null == searchStr ) {
     res.sendStatus(400);
     return;

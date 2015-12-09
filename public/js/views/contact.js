@@ -12,12 +12,13 @@ define(['SocialNetView', 'text!templates/contact.html'], function(SocialNetView,
     },
 
     addContact: function() {
-      var $responseArea = this.$('.actionArea');
+      var $responseArea = this.$('.actionarea');
       $.post('/accounts/me/contact',
-        {contactId: this.model.get('_id')},
-        function onSuccess() {
+        {contactId: this.model.get('_id')})
+        .done(function onSuccess() {
           $responseArea.text('Contact Added');
-        }, function onError() {
+        })
+        .fail(function onError() {
           $responseArea.text('Could not add contact');
         }
       );
