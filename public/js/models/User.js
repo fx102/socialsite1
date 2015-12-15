@@ -1,4 +1,4 @@
-define(['Backbone'], function(Backbone){
+define([], function(){
 	return Backbone.Model.extend({
 		urlRoot: '/accounts'
 	})
