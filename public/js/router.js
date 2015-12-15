@@ -1,7 +1,7 @@
 define(['views/index', 'views/register', 'views/login',
         'views/forgotpassword', 'views/profile', 'views/contacts',
         'views/addcontact', 'models/Account', 'models/StatusCollection',
-        'models/ContactCollection', 'views/info'],
+        'models/ContactCollection'],
 function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
          ContactsView, AddContactView, Account, StatusCollection,
          ContactCollection) {
@@ -16,7 +16,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       'forgotpassword': 'forgotpassword',
       'profile/:id': 'profile',
       'contacts/:id': 'contacts',
-      'info/:id' : 'info',
       'logout': 'logout'
     },
 
@@ -67,13 +66,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
         collection: contactsCollection
       }));
       contactsCollection.fetch();
-    },
-
-    info: function(id){
-      var userId = id ? id : 'me';
-      var model = new User({id:id});
-      this.changeView(new InfoView({model:model}));
-      model.fetch();      
     },
 
     logout: function() {
