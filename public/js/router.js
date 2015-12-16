@@ -71,6 +71,7 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
 
     info: function(id){
       var userId = id ? id : 'me';
+      console.log(userId);
       var model = new User({id:id});
       this.changeView(new InfoView({model:model}));
       model.fetch();      

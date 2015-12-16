@@ -3,32 +3,32 @@
 <form>
 	<fieldset>
 		<legend>Additional Information</legend>
-		<div>
+		<div class="editable">
 			<label>First Name: </label>	
 			<div class="view">
 				<label><%= name.first %></label>
 			</div>
-			<input class="edit" value="<%= name.first %>">
+			<input class="edit" name="firstname" value="<%= name.first %>">
 			<br>
 			<label>Last Name: </label>	
 			<div class="view">
 				<label><%= name.last %></label>
 			</div>
-			<input class="edit" value="<%= name.last %>">
+			<input class="edit" name="lastname" value="<%= name.last %>">
 			<br>
 			<label>Email: </label>	
 			<div class="view">
 				<label><%= email %></label>
 			</div>
-			<input class="edit" value="<%= email %>">
+			<input class="edit" name="email" value="<%= email %>">
 			<br>
 			<label>Birthday: </label>	
 			<div class="view">
-				<label><%= birthday.day + '/' + birthday.month + '/' + birthday.year %></label>
+				<label><% birthday ? birthday.day + '/' + birthday.month + '/' + birthday.year : 'undefined' %></label>
 			</div>
 			<div class="edit">
 			<label>Day: </label>
-				<select name="Day">
+				<select name="day">
 					  <option value="1">1</option>
 					  <option value="2">2</option>
 					  <option value="3">3</option>
@@ -102,15 +102,20 @@
 	</fieldset>
 	<fieldset>
 		<legend>Additional Information</legend>
-		<div id="custominfo">		
+		<div id="custominfo">
+			<div class="editable">
+				
+			</div>	
 		</div>
 		<a href="" id="addnew">Add</a>
 	</fieldset>
-	<div id="view">
-	  	<input type="submit" value="Edit"/>
+	<div class="editable">
+		<div class="view">
+		  	<input id="modify" type="submit" value="Edit"/>
+		</div>
+		<div class="edit">
+		  	<input id="save" type="submit" value="Save"/>
+		  	<input id="cancel" type="submit" value="Cancel"/>
+		</div>			
 	</div>
-	<div id="edit">
-	  	<input type="submit" value="Save"/>
-	  	<input type="submit" value="Cancel"/>
-	</div>	
 </form>

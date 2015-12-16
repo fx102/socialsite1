@@ -208,10 +208,12 @@ app.get('/accounts/:id', function(req, res) {
   var accountId = req.params.id == 'me'
                      ? req.session.accountId
                      : req.params.id;
+                     console.log(accountId);
   models.Account.findById(accountId, function(account) {
     if ( accountId == 'me' || models.Account.hasContact(account, req.session.accountId) ) {
       account.isFriend = true;
     }
+    console.log(account);
     res.send(account);
   });
 });
