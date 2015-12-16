@@ -1,6 +1,9 @@
-<input class="editkey" value="<%- key %>">
-<div class="viewkey">
-	<label><%- key %></label>
-	<button class="destroy">Del</button>
+<label><%= model.key %></label>	
+<div class="view">
+	<label><%= model.value %></label>
 </div>
-<input class="editval" value="<%- val %>">
+<input class="edit" name="firstname" value="<%= model.value %>">
+<% if(destroy) { %>
+	<a href="">Del</a>
+<%}%>
+<br>

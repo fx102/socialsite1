@@ -1,6 +1,9 @@
-define(['SocialNetView', 'text!templates/info.html']
-	, function(SocialNetView, InfoTemplate
-			   )
+define(['SocialNetView', 'text!templates/info.html',
+		'views/standardinfo', 'views/custominfo',
+		'models/InfoCollection']
+	, function(SocialNetView, InfoTemplate,
+			   StandardInfoView, CustomInfoView,
+			   InfoCollection)
 	{
 	return SocialNetView.extend({
     	el: $('#content'),
@@ -14,8 +17,11 @@ define(['SocialNetView', 'text!templates/info.html']
 	    initialize: function () {
 	      //bind model data when it changes
 	      this.model.bind('change', _.bind(this.render, this));
-	      //Any number of custom info
-	      //new CustomInfoView(this.custominfo);
+	      //new CustomInfoView(new InfoCollection({}));
+		  new StandardInfoView({collection: 
+				new InfoCollection([{key: "First Name", value: this.model.get("name").first}])
+			});
+			console.log('I am here');
 	    },
 
 	    modify: function(){
@@ -31,10 +37,10 @@ define(['SocialNetView', 'text!templates/info.html']
 	    },
 
     	render: function(){
-    		console.log(this.model.toJSON());
 	      	this.$el.html(
 	        	_.template(InfoTemplate, this.model.toJSON())
   			);
+  			//$(statusHtml).appendTo('.contacts_list');
     	}
 	});
 });
