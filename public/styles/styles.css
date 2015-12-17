@@ -7,7 +7,7 @@ form {
 }
 
 div.editing .edit {
-	display: block;
+	display: inline;
 }
 
 div.editing .view {

@@ -4,20 +4,22 @@ define(['SocialNetView', 'text!templates/infoField.html',
 				InfoModel, InfoFieldView)
 	{
 	return SocialNetView.extend({
-    	el: $('#content'),
+		tagName: 'div',
 
     	initialize: function(){
     		this.render();
     	},
 
-    	render: function(){
+    	renderHTML: function(){
+    		var that = this;
 	      if ( null != this.collection.models ) {
 	        _.each(this.collection.models, function (infoJSON) {
 	          var infoModel = new InfoModel(infoJSON);
 	          var infoHtml = (new InfoFieldView({ custom: false, destroy: false, model: infoModel })).render().el;
-	          $(infoHtml).appendTo('#standard');
+	          $(infoHtml).appendTo($(that.el));
 	        });
 	      }
+	      return that;
     	}
 	});
 });

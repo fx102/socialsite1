@@ -1,9 +1,11 @@
 define(['SocialNetView', 'text!templates/info.html',
 		'views/standardinfo', 'views/custominfo',
-		'models/InfoCollection']
+		'models/InfoCollection', 'helpers/PubSub', 
+		'views/infofield', 'models/Info']
 	, function(SocialNetView, InfoTemplate,
 			   StandardInfoView, CustomInfoView,
-			   InfoCollection)
+			   InfoCollection, PubSub, 
+			   InfoFieldView, InfoModel)
 	{
 	return SocialNetView.extend({
     	el: $('#content'),
@@ -12,14 +14,13 @@ define(['SocialNetView', 'text!templates/info.html',
     		'click .modify': 'modify',
     		'click .save': 'save',
     		'click .cancel': 'cancel',
-    		'click #addnew': 'addnew'
+    		'click #addnew' : 'addnew'
     	},
 
 	    initialize: function () {
 	      //bind model data when it changes
 	      this.model.bind('change', _.bind(this.render, this));
 	      //new CustomInfoView(new InfoCollection({}));
-		  console.log('I am here');
 	    },
 
 	    modify: function(){
@@ -28,6 +29,13 @@ define(['SocialNetView', 'text!templates/info.html',
 	    	//if not return false then there will be a '?' append to the url
 	    	return false;
 	    },
+
+	    addnew: function(){
+	    	var infoHtml = (new InfoFieldView({ custom: true, destroy: true, model: new InfoModel({key: "", value: ""}) })).render().el;
+	        $(infoHtml).appendTo('#custom');
+	    	return false;
+	    },
+
 
 	    save: function(){
 	    	return false;
@@ -38,21 +46,27 @@ define(['SocialNetView', 'text!templates/info.html',
 	    	return false;
 	    },
 
-	    addnew: function(){
-	    	//pubsub, trigger...
-	    },
-
     	render: function(){
 	      	this.$el.html(
 	        	_.template(InfoTemplate, this.model.toJSON())
   			);
-  			new StandardInfoView({collection: 
-				new InfoCollection([
-					{key: "First Name", value: this.model.get("name").first}
-					, {key: "Last Name", value: this.model.get("name").last}
-					, {key: "Email", value: this.model.get("email")}
-					])
-			});
+  			var standardinfo = (new StandardInfoView
+  				({
+  					collection: new InfoCollection
+  						([
+							{key: "First Name", value: this.model.get("name").first}
+							, {key: "Last Name", value: this.model.get("name").last}
+							, {key: "Email", value: this.model.get("email")}
+						])
+				})).renderHTML().el;
+			$(standardinfo).appendTo('#standard');
+			
+  			var custominfo = (new CustomInfoView
+  				({
+  					collection: new InfoCollection
+  						()
+				})).renderHTML().el;
+			$(custominfo).appendTo('#custom');
     	}
 	});
 });
