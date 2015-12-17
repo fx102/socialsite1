@@ -1,9 +1,11 @@
-<label><%= model.key %></label>	
+<label><%= model.key %></label>
+<% if(custom) { %>
+<input class="edit" value="<%= model.key %>">
+<%}%>
 <div class="view">
 	<label><%= model.value %></label>
 </div>
-<input class="edit" name="firstname" value="<%= model.value %>">
+<input class="edit" value="<%= model.value %>">
 <% if(destroy) { %>
 	<a href="">Del</a>
 <%}%>
-<br>
