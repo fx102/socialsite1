@@ -90,6 +90,39 @@ app.post('/register', function(req, res) {
   res.sendStatus(200);
 });
 
+app.post('/accounts/:id/personalinfo', function(req, res) {
+  var accountId = req.params.id == 'me'
+                   ? req.session.accountId
+                   : req.params.id;
+  var firstname = req.body.firstname;
+  var lastname = req.body.lastname;
+  var email = req.body.email;
+  var counter = req.body.counter;
+  var custominfokeys = req.body.custominfokeys;
+  var custominfo = req.body.custominfo;
+
+  if ( '' == firstname || email.length < 1
+       || '' == lastname ) {
+    res.sendStatus(400);
+    return;
+  }
+
+  models.Account.findById(accountId, function(account) {
+    account.name.first = req.body.firstname;
+    account.name.last = req.body.lastname;
+    account.email = req.body.email;
+    account.counter = req.body.counter;
+    account.custominfokeys = req.body.custominfokeys;
+    account.custominfo = req.body.custominfo;
+    account.save(function (err) {
+      if (err) {
+        console.log('Error saving account: ' + err);
+      }
+    });
+  });
+  res.sendStatus(200);
+});
+
 app.get('/account/authenticated', function(req, res) {
   if ( req.session.loggedIn ) {
     res.sendStatus(200);

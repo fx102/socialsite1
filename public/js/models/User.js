@@ -1,12 +1,14 @@
-define([], function(){
+define(['models/InfoCollection'], function(InfoCollection){
 	return Backbone.Model.extend({
 		defaults: {
 			//must specify the none collection attributes
 			name: {},
 			email: '',
-			biography: '',
-			birthday: {}
+			counter: 0,
+			custominfokeys: [],
+			custominfo: {}
 		},
+		
 		urlRoot: '/accounts'
 	})
 });

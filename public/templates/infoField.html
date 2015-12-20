@@ -3,11 +3,13 @@
 <%}%>
 
 <% if(custom) { %>
-<input class="edit" value="<%= model.key %>">: 
+<label class="view"><%= model.key %>: </label>
+<input class="edit" value="<%= model.key %>" name="<%= "key"+model.name %>">
+<label class="edit">: </label>
 <%}%>
 
 <label class="view"><%= model.value %></label>
-<input class="edit" value="<%= model.value %>" name="<%model.key.replace(/\s/g, '')%>">
+<input class="edit" value="<%= model.value %>" name="<%= custom ? "value"+model.name : model.name %>">
 
 <% if(custom) { %>
 	<button class="edit" id="del">Del</button>

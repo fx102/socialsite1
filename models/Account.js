@@ -39,7 +39,8 @@ module.exports = function(config, mongoose, nodemailer) {
     contacts:  [Contact],
     status:    [Status], // My own status updates only
     activity:  [Status],  //  All status updates including friends
-    custominfo: [{type: mongoose.Schema.Types.Mixed}]
+    custominfo: {type: mongoose.Schema.Types.Mixed},
+    custominfokeys: [{type: String}]
   });
 
 //mongoose.model constructs the document

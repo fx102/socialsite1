@@ -1,5 +1,5 @@
-define(['SocialNetView', 'text!templates/infoField.html'], 
-  function(SocialNetView, infoFieldTemplate) {
+define(['SocialNetView', 'text!templates/infoField.html', 'helpers/PubSub'], 
+  function(SocialNetView, infoFieldTemplate, PubSub) {
   return SocialNetView.extend({
     custom: false,
     tagName: 'p',
