@@ -285,7 +285,6 @@ app.post('/contacts/find', function(req, res) {
 });
 
 app.get('/download', function(req, res){
-  console.log('here');
   var content = [['1st title', '2nd title', '3rd title', 'another title'], ['a a a', 'bb\nb', 'cc,c', 'dd"d'], ['www', 'xxx', 'yyy', 'zzz']];
 
   var finalVal = '';
@@ -317,9 +316,11 @@ app.get('/download', function(req, res){
   // res.set('Content-Type', 'text/csv');
   // res.send(new Buffer(finalVal));
 
-  res.header("Content-Disposition", "attachment;filename=test.csv"); 
-  res.type("text/csv");
-  res.status(200).send(finalVal);
+
+
+  // res.header("Content-Disposition", "attachment;filename=test.csv"); 
+  // res.type("text/csv");
+  // res.status(200).send(finalVal);
 
 });
 
