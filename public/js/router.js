@@ -17,6 +17,7 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       'profile/:id': 'profile',
       'contacts/:id': 'contacts',
       'info/:id' : 'info',
+      'download' : 'download',
       'logout': 'logout'
     },
 
@@ -75,6 +76,15 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       var model = new User({id:id});
       this.changeView(new InfoView({model:model}));
       model.fetch();      
+    },
+
+    download: function(){
+        $.ajax({
+          url : '/download',
+          type : 'GET'
+        }).done(function(response){
+          return response;
+        });
     },
 
     logout: function() {

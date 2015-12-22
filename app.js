@@ -284,6 +284,39 @@ app.post('/contacts/find', function(req, res) {
   });
 });
 
+app.get('/download', function(req, res){
+  console.log('here');
+  var content = [['1st title', '2nd title', '3rd title', 'another title'], ['a a a', 'bb\nb', 'cc,c', 'dd"d'], ['www', 'xxx', 'yyy', 'zzz']];
+
+  var finalVal = '';
+
+  for (var i = 0; i < content.length; i++) {
+      var value = content[i];
+
+      for (var j = 0; j < value.length; j++) {
+          var innerValue =  value[j]===null?'':value[j].toString();
+          var result = innerValue.replace(/"/g, '""');
+          if (result.search(/("|,|\n)/g) >= 0)
+              result = '"' + result + '"';
+          if (j > 0)
+              finalVal += ',';
+          finalVal += result;
+      }
+
+      finalVal += '\n';
+  }
+
+  console.log(finalVal);
+
+  // res.setHeader('Content-disposition', 'attachment; filename=contacts.csv');
+  //   res.writeHead(200, {
+  //       'Content-Type': 'text/csv'
+  //   });
+  // res.send(finalVal);
+  res.set('Content-Type', 'text/csv');
+  res.send(new Buffer(finalVal));
+});
+
 app.delete('/logout', function (req, res) {
     req.session.destroy();
     //must send the status code in order to kick the procedures in .done
