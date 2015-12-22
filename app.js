@@ -312,9 +312,15 @@ app.get('/download', function(req, res){
   //   res.writeHead(200, {
   //       'Content-Type': 'text/csv'
   //   });
+
   // res.send(finalVal);
-  res.set('Content-Type', 'text/csv');
-  res.send(new Buffer(finalVal));
+  // res.set('Content-Type', 'text/csv');
+  // res.send(new Buffer(finalVal));
+
+  res.header("Content-Disposition", "attachment;filename=test.csv"); 
+  res.type("text/csv");
+  res.status(200).send(finalVal);
+
 });
 
 app.delete('/logout', function (req, res) {

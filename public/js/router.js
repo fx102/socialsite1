@@ -17,7 +17,7 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       'profile/:id': 'profile',
       'contacts/:id': 'contacts',
       'info/:id' : 'info',
-      'download' : 'download',
+      'download/*path' : 'download',
       'logout': 'logout'
     },
 
@@ -82,8 +82,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
         $.ajax({
           url : '/download',
           type : 'GET'
-        }).done(function(response){
-          return response;
         });
     },
 
