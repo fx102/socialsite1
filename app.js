@@ -285,7 +285,9 @@ app.post('/contacts/find', function(req, res) {
 });
 
 app.get('/download', function(req, res){
-  
+  models.Account.findAll(function(accounts) {
+    res.send(accounts);
+  });  
 });
 
 app.delete('/logout', function (req, res) {

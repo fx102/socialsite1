@@ -78,46 +78,6 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
       model.fetch();      
     },
 
-    download: function(){
-        // $.ajax({
-        //   url : '/download',
-        //   type : 'GET'
-        // });
-      // var content = [['1st title', '2nd title', '3rd title', 'another title'], ['a a a', 'bb\nb', 'cc,c', 'dd"d'], ['www', 'xxx', 'yyy', 'zzz']];
-
-      // var finalVal = '';
-
-      // for (var i = 0; i < content.length; i++) {
-      //     var value = content[i];
-
-      //     for (var j = 0; j < value.length; j++) {
-      //         var innerValue =  value[j]===null?'':value[j].toString();
-      //         var result = innerValue.replace(/"/g, '""');
-      //         if (result.search(/("|,|\n)/g) >= 0)
-      //             result = '"' + result + '"';
-      //         if (j > 0)
-      //             finalVal += ',';
-      //         finalVal += result;
-      //     }
-
-      //     finalVal += '\n';
-      // }
-
-      // console.log('here');
-
-      // var downloadName = "test";
-      // var csvContent = "data:text/csv;charset=utf-8,";
-
-      // csvContent += finalVal;
-      
-      // var encodedUri = encodeURI(csvContent);
-      // var link = document.createElement("a");
-      // link.setAttribute("href", encodedUri);
-      // link.setAttribute("download", downloadName+".csv");
-      
-      // link.click();
-    },
-
     logout: function() {
       //with reference to http://danialk.github.io/blog/2013/07/28/advanced-security-in-backbone-application/
       var that = this;

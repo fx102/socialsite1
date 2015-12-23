@@ -109,7 +109,13 @@ module.exports = function(config, mongoose, nodemailer) {
     Account.findOne({_id:accountId}, function(err,doc) {
       callback(doc);
     });
-  }
+  };
+
+  var findAll = function(callback) {
+    Account.find({}, 'name email custominfo', function(err,doc) {
+      callback(doc);
+    });
+  };
 
   var addContact = function(account, addcontact) {
     contact = {
@@ -174,6 +180,7 @@ module.exports = function(config, mongoose, nodemailer) {
     forgotPassword: forgotPassword,
     changePassword: changePassword,
     findByString: findByString,
+    findAll: findAll,
     addContact: addContact,
     removeContact: removeContact,
     login: login,
