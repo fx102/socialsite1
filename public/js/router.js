@@ -83,39 +83,39 @@ function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
         //   url : '/download',
         //   type : 'GET'
         // });
-      var content = [['1st title', '2nd title', '3rd title', 'another title'], ['a a a', 'bb\nb', 'cc,c', 'dd"d'], ['www', 'xxx', 'yyy', 'zzz']];
+      // var content = [['1st title', '2nd title', '3rd title', 'another title'], ['a a a', 'bb\nb', 'cc,c', 'dd"d'], ['www', 'xxx', 'yyy', 'zzz']];
 
-      var finalVal = '';
+      // var finalVal = '';
 
-      for (var i = 0; i < content.length; i++) {
-          var value = content[i];
+      // for (var i = 0; i < content.length; i++) {
+      //     var value = content[i];
 
-          for (var j = 0; j < value.length; j++) {
-              var innerValue =  value[j]===null?'':value[j].toString();
-              var result = innerValue.replace(/"/g, '""');
-              if (result.search(/("|,|\n)/g) >= 0)
-                  result = '"' + result + '"';
-              if (j > 0)
-                  finalVal += ',';
-              finalVal += result;
-          }
+      //     for (var j = 0; j < value.length; j++) {
+      //         var innerValue =  value[j]===null?'':value[j].toString();
+      //         var result = innerValue.replace(/"/g, '""');
+      //         if (result.search(/("|,|\n)/g) >= 0)
+      //             result = '"' + result + '"';
+      //         if (j > 0)
+      //             finalVal += ',';
+      //         finalVal += result;
+      //     }
 
-          finalVal += '\n';
-      }
+      //     finalVal += '\n';
+      // }
 
-      console.log('here');
+      // console.log('here');
 
-      var downloadName = "test";
-      var csvContent = "data:text/csv;charset=utf-8,";
+      // var downloadName = "test";
+      // var csvContent = "data:text/csv;charset=utf-8,";
 
-      csvContent += finalVal;
+      // csvContent += finalVal;
       
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", downloadName+".csv");
+      // var encodedUri = encodeURI(csvContent);
+      // var link = document.createElement("a");
+      // link.setAttribute("href", encodedUri);
+      // link.setAttribute("download", downloadName+".csv");
       
-      link.click();
+      // link.click();
     },
 
     logout: function() {

@@ -5,7 +5,8 @@ function(SocialNetView, indexTemplate, StatusView, Status) {
     el: $('#content'),
 
     events: {
-      "submit form": "updateStatus"
+      "submit form": "updateStatus",
+      "click #download": "download"
     },
 
     initialize: function() {
@@ -34,6 +35,10 @@ function(SocialNetView, indexTemplate, StatusView, Status) {
         statusCollection.add(new Status({status:statusText}));
       });
       return false;
+    },
+
+    download: function(){
+      
     },
 
     render: function() {
