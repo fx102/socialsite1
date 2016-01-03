@@ -15,6 +15,7 @@
       "errorhandler": "~x.x",
       "raw-body": "~x.x",
       "media-typer": "~x.x",
-      "cookie-parser": "~x.x"
+      "cookie-parser": "~x.x",
+      "hashids": ">=1.0.2"
     }
 }

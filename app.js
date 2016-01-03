@@ -13,7 +13,8 @@ var express     = require("express"),
     //https://www.npmjs.com/package/raw-body
     getRawBody = require('raw-body'),
     cookieParser = require('cookie-parser'),
-    typer = require('media-typer');
+    typer = require('media-typer'),
+    hashids = require('hashids');
 
 var config = {
   mail: require('./config/mail')
@@ -52,6 +53,14 @@ mongoose.connect(dbPath, function onMongooseError(err) {
 app.get('/', function(req, res){
   res.render('index.jade');
 });
+
+/* creating class object */
+var hashids = new hashids("Huanhuan is my son :)");
+/* encoding one number */
+var id = hashids.encode(1234);
+/* id is always a string */
+console.log(id);
+
 
 app.post('/login', function(req, res) {
   var email = req.body.email;
